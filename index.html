@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a12">
+  <meta name="description" content="NOVYX — a Fortnite community built to compete, improve, and rise beyond limits. Apply to join the clan.">
+  <title>NOVYX — Rise Beyond Limits</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#f5f7fb, #080a12);
+      --surface: light-dark(#ffffff, #101321);
+      --surface-2: light-dark(#eef1f8, #15192a);
+      --text: light-dark(#111526, #f4f6ff);
+      --muted: light-dark(#5d6478, #a1a8c0);
+      --line: light-dark(#dce1ed, #272c43);
+      --cyan: #64e6ff;
+      --violet: #9b7bff;
+      --pink: #ff77c8;
+      --root-bg: light-dark(#f5f7fb, #080a12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+    body { margin: 0; background: var(--root-bg); color: var(--text); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .app-root { min-height: 100vh; width: 100%; border-radius: 0; overflow: hidden; background: var(--root-bg); }
+    .ambient { position: absolute; inset: 0 0 auto; height: 900px; pointer-events: none; overflow: hidden; z-index: 0; }
+    body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .18; background-image: radial-gradient(#8795c522 .7px, transparent .7px); background-size: 5px 5px; mask-image: linear-gradient(to bottom, #000, transparent 75%); }
+    .ambient::before, .ambient::after { content: ""; position: absolute; border-radius: 50%; filter: blur(85px); opacity: .18; }
+    .ambient::before { width: 360px; height: 360px; top: 50px; left: -120px; background: var(--cyan); }
+    .ambient::after { width: 420px; height: 420px; top: 5px; right: -130px; background: var(--violet); }
+    .ambient::before, .ambient::after { animation: ambient-drift 16s ease-in-out infinite alternate; }
+    .ambient::after { animation-delay: -7s; }
+    .site-header { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(18px); background: color-mix(in srgb, var(--root-bg) 82%, transparent); border-bottom: 1px solid var(--line); }
+    .scroll-progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: linear-gradient(90deg, var(--cyan), var(--violet), var(--pink)); box-shadow: 0 0 12px #64e6ff77; z-index: 2; }
+    .nav { max-width: 1240px; margin: 0 auto; padding: 15px 24px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font-weight: 950; letter-spacing: .14em; font-size: 19px; }
+    .brand-mark { width: 37px; height: 37px; display: grid; place-items: center; color: #081018; background: linear-gradient(135deg, var(--cyan), var(--violet)); clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%); font-size: 13px; letter-spacing: -.06em; box-shadow: 0 0 28px #64e6ff2e; }
+    .nav-links { display: flex; align-items: center; gap: 28px; font-size: 13px; font-weight: 700; color: var(--muted); }
+    .nav-links a:hover, .text-link:hover { color: var(--cyan); }
+    .nav-cta, .button { border: 0; cursor: pointer; border-radius: 11px; padding: 12px 17px; font-weight: 850; font-size: 13px; display: inline-flex; justify-content: center; align-items: center; gap: 9px; transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease; }
+    .nav-cta, .button-primary { color: #071018; background: linear-gradient(110deg, var(--cyan), #9cecff 48%, #b7a4ff); box-shadow: 0 7px 28px #64e6ff20; }
+    .button:hover, .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px #64e6ff30; }
+    .button:active, .nav-cta:active { transform: translateY(0) scale(.98); }
+    .button-primary { position: relative; isolation: isolate; overflow: hidden; }
+    .button-primary::after { content: ""; position: absolute; inset: -40% auto -40% -55%; width: 35%; transform: skewX(-22deg); background: linear-gradient(90deg, transparent, #ffffffa8, transparent); transition: left .65s ease; z-index: -1; }
+    .button-primary:hover::after { left: 125%; }
+    .button-secondary { color: var(--text); border: 1px solid var(--line); background: var(--surface); }
+    .menu-toggle { display: none; background: var(--surface); color: var(--text); border: 1px solid var(--line); padding: 9px 11px; border-radius: 10px; cursor: pointer; }
+    main, footer { position: relative; z-index: 1; }
+    .hero { max-width: 1240px; min-height: 680px; margin: 0 auto; padding: 88px 24px 74px; display: grid; grid-template-columns: 1.12fr .88fr; align-items: center; gap: 54px; }
+    .hero-content { animation: rise-in .8s cubic-bezier(.2,.75,.2,1) both; }
+    .hero-content .eyebrow { border: 1px solid #64e6ff30; background: #64e6ff0b; padding: 10px 13px; border-radius: 999px; }
+    .hero-content h1 { text-shadow: 0 0 70px #9b7bff16; }
+    .hero-actions .button { min-height: 48px; padding-inline: 21px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; text-transform: uppercase; letter-spacing: .18em; color: var(--muted); font-size: 10px; font-weight: 900; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 13px var(--cyan); }
+    .live-dot { animation: pulse-glow 2.2s ease-in-out infinite; }
+    h1 { font-size: clamp(56px, 8.6vw, 106px); line-height: .88; letter-spacing: -.075em; margin: 23px 0 20px; font-weight: 1000; }
+    .gradient-text { color: var(--cyan); background: linear-gradient(105deg, var(--cyan) 4%, #b1b7ff 58%, var(--pink)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-copy { max-width: 510px; color: var(--muted); font-size: 16px; line-height: 1.8; margin: 0 0 28px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-note { margin-top: 22px; font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+    .hero-note span { color: var(--cyan); font-size: 15px; }
+    .tag-copy { margin-top: 16px; display: inline-flex; align-items: center; gap: 9px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: color-mix(in srgb, var(--surface) 80%, transparent); font-size: 11px; font-weight: 800; cursor: pointer; transition: border-color .2s, color .2s, transform .2s; }
+    .tag-copy:hover { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+    .tag-copy strong { color: var(--text); letter-spacing: .12em; }
+    .emblem-wrap { min-height: 410px; display: grid; place-items: center; position: relative; animation: rise-in 1s .12s cubic-bezier(.2,.75,.2,1) both; }
+    .emblem-grid { position: absolute; inset: 4%; background-image: linear-gradient(#8994bb13 1px, transparent 1px), linear-gradient(90deg, #8994bb13 1px, transparent 1px); background-size: 28px 28px; mask-image: radial-gradient(ellipse, #000 18%, transparent 73%); }
+    .ring { position: absolute; width: min(360px, 80vw); aspect-ratio: 1; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--cyan) 25%, transparent); box-shadow: 0 0 70px #64e6ff0a, inset 0 0 60px #9b7bff0a; animation: orbit 32s linear infinite; }
+    .ring::before, .ring::after { content: ""; position: absolute; border-radius: 50%; inset: 20px; border: 1px dashed color-mix(in srgb, var(--violet) 35%, transparent); }
+    .ring::after { inset: 42px; border-style: solid; border-color: color-mix(in srgb, var(--cyan) 18%, transparent); }
+    .emblem { width: 250px; height: 270px; position: relative; display: grid; place-items: center; filter: drop-shadow(0 0 30px #64e6ff2b); animation: float-mark 5s ease-in-out infinite; }
+    .emblem-wrap::after { content: ""; position: absolute; width: min(300px, 70vw); aspect-ratio: 1; border-radius: 50%; background: conic-gradient(from 0deg, transparent 0 72%, #64e6ff55 82%, transparent 92%); mask: radial-gradient(circle, transparent 63%, #000 64% 65%, transparent 66%); animation: orbit 12s linear infinite reverse; pointer-events: none; }
+    .emblem-shape { position: absolute; inset: 0; background: linear-gradient(145deg, var(--cyan), #8b8dff 55%, var(--pink)); clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%, 12% 50%); }
+    .emblem-shape::after { content: ""; position: absolute; inset: 3px; background: var(--root-bg); clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%, 12% 50%); }
+    .emblem-letters { z-index: 1; font-weight: 1000; font-size: 76px; letter-spacing: -.14em; padding-right: 12px; font-style: italic; background: linear-gradient(130deg, var(--cyan), #d3ccff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .floating-label { position: absolute; border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(12px); border-radius: 12px; padding: 12px 15px; box-shadow: 0 15px 35px #00000010; }
+    .floating-label strong { display: block; font-size: 11px; letter-spacing: .12em; }
+    .floating-label small { display: block; color: var(--muted); font-size: 10px; margin-top: 5px; }
+    .label-top { top: 35px; right: 0; }
+    .label-bottom { bottom: 30px; left: 0; }
+    .hero-microstats { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); max-width: 490px; }
+    .microstat strong { display: block; font-size: 17px; letter-spacing: -.04em; }
+    .microstat span { display: block; color: var(--muted); text-transform: uppercase; font-size: 9px; font-weight: 850; letter-spacing: .13em; margin-top: 5px; }
+    .microstat strong em { color: var(--cyan); font-style: normal; }
+    .drop-section { max-width: 1240px; margin: 0 auto; padding: 54px 24px 82px; }
+    .drop-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 22px; }
+    .drop-heading h2 { font-size: clamp(26px, 4vw, 38px); margin: 9px 0 0; }
+    .drop-heading p { color: var(--muted); font-size: 12px; max-width: 320px; line-height: 1.7; margin: 0; }
+    .drop-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 14px; }
+    .drop-card { position: relative; overflow: hidden; min-height: 220px; border: 1px solid var(--line); border-radius: 18px; padding: 24px; background: linear-gradient(145deg, var(--surface), var(--surface-2)); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+    .drop-card:hover { transform: translateY(-5px); border-color: #64e6ff77; box-shadow: 0 20px 55px #00000020; }
+    .drop-card::before { content: ""; position: absolute; inset: 0; opacity: 0; background: radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 50%), #64e6ff16, transparent 48%); transition: opacity .25s ease; pointer-events: none; }
+    .drop-card:hover::before { opacity: 1; }
+    .drop-card::after { content: attr(data-mark); position: absolute; right: 12px; bottom: -34px; font-size: 115px; font-weight: 1000; letter-spacing: -.12em; color: color-mix(in srgb, var(--text) 5%, transparent); pointer-events: none; }
+    .drop-card .drop-index { font-size: 10px; letter-spacing: .16em; color: var(--cyan); font-weight: 950; }
+    .drop-card h3 { font-size: 22px; letter-spacing: -.04em; margin: 38px 0 9px; }
+    .drop-card p { max-width: 310px; color: var(--muted); font-size: 12px; line-height: 1.8; margin: 0; position: relative; z-index: 1; }
+    .drop-card.featured { background: radial-gradient(ellipse at 100% 0%, #9b7bff22, transparent 55%), linear-gradient(145deg, #111a2b, #0b0d17); border-color: #64e6ff35; }
+    .drop-card.featured h3 { font-size: 27px; }
+    .mini-tag { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; font-size: 9px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 18px; }
+    .mini-tag .live-dot { width: 6px; height: 6px; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes float-mark { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-9px) rotate(1deg); } }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    @keyframes ambient-drift { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(32px, 24px, 0) scale(1.12); } }
+    @keyframes pulse-glow { 0%,100% { opacity: 1; box-shadow: 0 0 13px var(--cyan); } 50% { opacity: .65; box-shadow: 0 0 22px var(--cyan); } }
+    .ticker { border-block: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 72%, transparent); overflow: hidden; }
+    .ticker-inner { max-width: 1160px; margin: 0 auto; padding: 17px 24px; display: flex; justify-content: space-between; gap: 22px; flex-wrap: wrap; }
+    .ticker-item { display: flex; align-items: center; gap: 9px; color: var(--muted); text-transform: uppercase; font-size: 10px; font-weight: 900; letter-spacing: .13em; }
+    .ticker-item b { color: var(--text); }
+    .section { max-width: 1160px; margin: 0 auto; padding: 95px 24px; }
+    .section-head { max-width: 650px; margin-bottom: 35px; }
+    .section-kicker { color: var(--cyan); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; font-weight: 950; }
+    h2 { font-size: clamp(34px, 5vw, 54px); line-height: 1.02; letter-spacing: -.055em; margin: 12px 0 14px; }
+    .section-desc { color: var(--muted); line-height: 1.8; margin: 0; max-width: 600px; font-size: 14px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .feature-card { padding: 25px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; min-height: 205px; transition: transform .2s ease, border-color .2s ease; }
+    .feature-card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--cyan) 50%, var(--line)); }
+    .feature-card { position: relative; overflow: hidden; }
+    .feature-card::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--violet), var(--pink)); transition: right .3s ease; }
+    .feature-card:hover::after { right: 0; }
+    .feature-icon { width: 43px; height: 43px; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--cyan) 28%, var(--line)); color: var(--cyan); background: color-mix(in srgb, var(--cyan) 8%, var(--surface)); border-radius: 12px; font-size: 19px; }
+    .feature-card h3 { font-size: 17px; margin: 20px 0 9px; letter-spacing: -.02em; }
+    .feature-card p { font-size: 12px; line-height: 1.8; color: var(--muted); margin: 0; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s cubic-bezier(.2,.75,.2,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .feature-card:nth-child(2), .drop-card:nth-child(2) { transition-delay: .08s; }
+    .feature-card:nth-child(3), .drop-card:nth-child(3) { transition-delay: .16s; }
+    .manifesto { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: start; padding-top: 15px; }
+    .manifesto-mark { color: var(--cyan); font-size: 11px; font-weight: 950; letter-spacing: .18em; text-transform: uppercase; }
+    .manifesto blockquote { margin: 0; font-size: clamp(24px, 3.5vw, 42px); font-weight: 850; line-height: 1.25; letter-spacing: -.045em; }
+    .manifesto blockquote span { color: var(--muted); }
+    .join-panel { position: relative; overflow: hidden; border: 1px solid #7c8aff44; border-radius: 24px; padding: 45px; background: linear-gradient(115deg, color-mix(in srgb, var(--cyan) 9%, var(--surface)), color-mix(in srgb, var(--violet) 12%, var(--surface))); display: grid; grid-template-columns: 1fr auto; gap: 25px; align-items: center; }
+    .join-panel::after { content: "NVX"; position: absolute; right: 16%; top: -38px; font-size: 190px; font-weight: 1000; letter-spacing: -.1em; color: color-mix(in srgb, var(--text) 4%, transparent); pointer-events: none; }
+    .join-panel > * { position: relative; z-index: 1; }
+    .join-panel h2 { margin-top: 0; }
+    .join-panel p { max-width: 590px; color: var(--muted); line-height: 1.8; font-size: 13px; margin-bottom: 0; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .step { border-top: 1px solid var(--line); padding-top: 18px; }
+    .step-num { color: var(--cyan); font-weight: 950; font-size: 11px; letter-spacing: .16em; }
+    .step h3 { margin: 12px 0 8px; font-size: 16px; }
+    .step p { color: var(--muted); font-size: 12px; line-height: 1.8; margin: 0; }
+    .faq-list { border-top: 1px solid var(--line); }
+    .faq-item { border-bottom: 1px solid var(--line); }
+    .faq-question { width: 100%; border: 0; padding: 21px 0; background: transparent; color: var(--text); display: flex; align-items: center; justify-content: space-between; gap: 18px; text-align: left; font-size: 14px; font-weight: 800; cursor: pointer; }
+    .faq-question span:last-child { color: var(--cyan); font-size: 22px; transition: transform .2s; }
+    .faq-answer { display: none; max-width: 760px; padding: 0 30px 20px 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .faq-item.open .faq-answer { display: block; }
+    .faq-answer { animation: rise-in .24s ease both; }
+    .faq-item.open .faq-question span:last-child { transform: rotate(45deg); }
+    footer { border-top: 1px solid var(--line); }
+    .footer-inner { max-width: 1160px; padding: 30px 24px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .footer-note { color: var(--muted); font-size: 11px; line-height: 1.8; }
+    .footer-links { display: flex; gap: 18px; color: var(--muted); font-size: 11px; font-weight: 750; }
+    .footer-links a:hover { color: var(--cyan); }
+    .toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; z-index: 50; background: var(--text); color: var(--root-bg); padding: 12px 16px; border-radius: 10px; font-size: 12px; font-weight: 800; transition: .2s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; gap: 12px; padding-top: 68px; min-height: auto; }
+      .hero-copy { max-width: 620px; }
+      .emblem-wrap { min-height: 340px; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .join-panel { grid-template-columns: 1fr; padding: 32px; }
+      .join-panel::after { right: 0; top: 10px; font-size: 125px; }
+      .section { padding-block: 72px; }
+      .nav-links { display: none; position: absolute; top: 68px; left: 12px; right: 12px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); flex-direction: column; align-items: stretch; gap: 17px; box-shadow: 0 15px 35px #00000022; }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 5px; }
+      .nav-cta { display: none; }
+      .menu-toggle { display: inline-flex; }
+      .steps { gap: 12px; }
+      .drop-grid { grid-template-columns: 1fr 1fr; }
+      .drop-card.featured { grid-column: 1 / -1; }
+      .drop-heading { align-items: start; flex-direction: column; }
+      .manifesto { grid-template-columns: 1fr; gap: 16px; }
+    }
+    @media (max-width: 540px) {
+      .nav { padding: 12px 17px; }
+      .hero { padding: 58px 19px 55px; }
+      h1 { font-size: clamp(57px, 17vw, 82px); }
+      .hero-copy { font-size: 14px; }
+      .hero-actions .button { flex: 1 1 100%; }
+      .emblem-wrap { min-height: 300px; }
+      .emblem { width: 195px; height: 220px; }
+      .emblem-letters { font-size: 62px; }
+      .ring { width: 265px; }
+      .label-top { right: -4px; top: 8px; }
+      .label-bottom { left: -4px; bottom: 8px; }
+      .ticker-inner { justify-content: flex-start; }
+      .section { padding: 65px 19px; }
+      .drop-section { padding: 28px 19px 60px; }
+      .drop-grid { grid-template-columns: 1fr; }
+      .drop-card.featured { grid-column: auto; }
+      .drop-card { min-height: 190px; }
+      .hero-microstats { gap: 18px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .feature-card { min-height: 0; }
+      .join-panel { padding: 25px; }
+      .steps { grid-template-columns: 1fr; gap: 22px; }
+      .footer-inner { padding: 25px 19px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+  </style>
+</head>
+<body>
+  <div class="app-root">
+    <div class="ambient" aria-hidden="true"></div>
+    <header class="site-header">
+      <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href="#home" aria-label="NOVYX home"><span class="brand-mark">NVX</span><span>NOVYX</span></a>
+        <div class="nav-links" id="navLinks">
+          <a href="#about">About</a>
+          <a href="#values">Our vibe</a>
+          <a href="#join">Join the clan</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <a class="nav-cta" href="https://forms.gle/1xH7u8PGz7XxkLGMA" target="_blank" rel="noopener noreferrer">APPLY NOW <span aria-hidden="true">↗</span></a>
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation">☰</button>
+      </nav>
+    </header>
+    <main id="home">
+      <section class="hero">
+        <div class="hero-content">
+          <div class="eyebrow"><span class="live-dot"></span> Independent Fortnite clan · Recruiting</div>
+          <h1>PLAY<br><span class="gradient-text">DIFFERENT.</span></h1>
+          <p class="hero-copy">Not just another tag in the kill feed. <strong>NOVYX</strong> is where the grind gets a squad, every match is a lesson, and your next level starts with the people beside you.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://forms.gle/1xH7u8PGz7XxkLGMA" target="_blank" rel="noopener noreferrer">Apply to NOVYX <span aria-hidden="true">↗</span></a>
+            <a class="button button-secondary" href="#about">Explore the clan <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-note"><span>✦</span> No ego queue. Just teamwork, progress, and plays worth clipping.</div>
+          <button class="tag-copy" id="copyTag" type="button" aria-label="Copy clan tag NVX">CLAN TAG <strong>NVX</strong> <span aria-hidden="true">▣</span> <span>Copy tag</span></button>
+          <div class="hero-microstats"><div class="microstat"><strong><em>01</em> / TEAM</strong><span>One squad mentality</span></div><div class="microstat"><strong><em>∞</em> / XP</strong><span>Always improving</span></div><div class="microstat"><strong><em>NVX</em></strong><span>Play different</span></div></div>
+        </div>
+        <div class="emblem-wrap" aria-label="NOVYX NVX emblem">
+          <div class="emblem-grid"></div><div class="ring"></div>
+          <div class="emblem"><div class="emblem-shape"></div><div class="emblem-letters">NVX</div></div>
+          <div class="floating-label label-top"><strong>NVX // NOVYX</strong><small>EST. 2026 · SQUAD PROTOCOL</small></div>
+          <div class="floating-label label-bottom"><strong>RISE BEYOND LIMITS</strong><small>YOUR GAME. YOUR NEXT LEVEL.</small></div>
+        </div>
+      </section>
+      <div class="ticker" aria-label="Clan values"><div class="ticker-inner">
+        <div class="ticker-item"><span class="live-dot"></span><b>TEAMWORK</b> over ego</div>
+        <div class="ticker-item"><span style="color:var(--violet)">✦</span><b>IMPROVEMENT</b> every game</div>
+        <div class="ticker-item"><span style="color:var(--pink)">◆</span><b>COMMUNITY</b> first</div>
+        <div class="ticker-item"><span style="color:var(--cyan)">↗</span><b>COMPETE</b> with respect</div>
+      </div></div>
+      <section class="drop-section" aria-labelledby="drop-title"><div class="drop-heading"><div><div class="section-kicker">The NOVYX experience</div><h2 id="drop-title">DROP IN. <span class="gradient-text">LOCK IN.</span></h2></div><p>Find your lane, bring your energy, and help build the kind of squad you actually want to queue with.</p></div><div class="drop-grid"><article class="drop-card featured" data-mark="01"><div class="drop-index">01 / THE GRIND</div><h3>Built to get better.</h3><p>Share strategies, learn from tough games, and turn every session into progress — not just another match.</p><span class="mini-tag"><span class="live-dot"></span> Growth mindset</span></article><article class="drop-card" data-mark="02"><div class="drop-index">02 / THE SQUAD</div><h3>Queue together.</h3><p>Meet teammates, find people for your mode, and make good comms part of the loadout.</p><span class="mini-tag">✦ Team first</span></article><article class="drop-card" data-mark="03"><div class="drop-index">03 / THE MOMENTS</div><h3>Make it clip-worthy.</h3><p>Bring your best plays, funniest fails, and big wins. The moments are better when the squad shares them.</p><span class="mini-tag">↗ Share the hype</span></article></div></section>
+      <section class="section" id="about">
+        <div class="section-head"><div class="section-kicker">01 / The mindset</div><h2>MORE THAN A<br><span class="gradient-text">CLAN TAG.</span></h2><p class="section-desc">A good clan isn't just a logo next to your name. It's teammates who show up, share what they learn, and make the game better for everyone in the lobby.</p></div>
+        <div class="feature-grid" id="values">
+          <article class="feature-card"><div class="feature-icon">⌁</div><h3>Level up together</h3><p>Share tips, learn from matches, practice smart, and celebrate progress — every player's growth matters.</p></article>
+          <article class="feature-card"><div class="feature-icon">✦</div><h3>Find your squad</h3><p>Meet teammates, team up for Fortnite, share highlights, and make the community feel like a team.</p></article>
+          <article class="feature-card"><div class="feature-icon">↗</div><h3>Compete with respect</h3><p>Bring effort and confidence, keep comms constructive, and show respect to teammates and opponents.</p></article>
+        </div>
+      </section>
+      <section class="section" style="padding-top: 0; padding-bottom: 40px;">
+        <div class="manifesto reveal"><div class="manifesto-mark">THE NOVYX CODE / 001</div><blockquote>Win with the squad. <span>Learn from the loss. Respect the lobby. Come back stronger — every single queue.</span></blockquote></div>
+      </section>
+      <section class="section" id="join" style="padding-top: 12px;">
+        <div class="join-panel">
+          <div><div class="section-kicker">02 / Your move</div><h2>READY TO JOIN<br><span class="gradient-text">NOVYX?</span></h2><p>Fill out the application form on our website to introduce yourself. The team will review your application, and you can keep an eye on the email address you provide for updates.</p></div>
+          <a class="button button-primary" href="https://forms.gle/1xH7u8PGz7XxkLGMA" target="_blank" rel="noopener noreferrer">Open application <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+      <section class="section" aria-labelledby="steps-title">
+        <div class="section-head"><div class="section-kicker">03 / The process</div><h2 id="steps-title">THREE STEPS.<br><span class="gradient-text">ONE TEAM.</span></h2><p class="section-desc">Getting started is simple. No complicated process — just tell us a little about yourself and your game.</p></div>
+        <div class="steps">
+          <article class="step"><div class="step-num">STEP 01</div><h3>Send your application</h3><p>Open the Google Form from the Apply button and answer the questions honestly.</p></article>
+          <article class="step"><div class="step-num">STEP 02</div><h3>Give us a little time</h3><p>The clan team reviews applications. Make sure the email you enter is correct.</p></article>
+          <article class="step"><div class="step-num">STEP 03</div><h3>Hear back from us</h3><p>Look out for an update by email. If accepted, you'll get the next steps for joining the community.</p></article>
+        </div>
+      </section>
+      <section class="section" id="faq" style="padding-top: 8px;">
+        <div class="section-head"><div class="section-kicker">04 / Good to know</div><h2>QUICK <span class="gradient-text">FAQ.</span></h2><p class="section-desc">A few quick answers before you apply.</p></div>
+        <div class="faq-list">
+          <div class="faq-item"><button class="faq-question" aria-expanded="false"><span>How do I apply to NOVYX?</span><span>+</span></button><div class="faq-answer">Click any Apply button on this page to open the NOVYX application form. Fill it out and submit it when you're ready.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false"><span>What should I include in my application?</span><span>+</span></button><div class="faq-answer">Use your correct Epic Games username, choose the options that fit you, and answer the written questions honestly. Don't share your password or other private account information.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false"><span>How will I hear about my application?</span><span>+</span></button><div class="faq-answer">The current application process asks for an email address, so check that inbox for updates. A response may take some time while applications are reviewed.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false"><span>Do I need to be a pro player?</span><span>+</span></button><div class="faq-answer">You don't have to call yourself a pro. Be honest about your current level, be willing to improve, and treat other players with respect.</div></div>
+        </div>
+      </section>
+    </main>
+    <footer><div class="footer-inner">
+      <div><a class="brand" href="#home"><span class="brand-mark">NVX</span><span>NOVYX</span></a><div class="footer-note" style="margin-top:10px;">Rise beyond limits. Play as one.</div></div>
+      <div class="footer-links"><a href="#about">About</a><a href="#join">Apply</a><a href="#faq">FAQ</a><a href="#home">Back to top ↑</a></div>
+      <div class="footer-note">An independent Fortnite community.<br>Not affiliated with Epic Games.</div>
+    </div></footer>
+    <div class="toast" id="toast" role="status" aria-live="polite">Copied!</div>
+  </div>
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const progressBar = document.getElementById('scrollProgress');
+    const copyTag = document.getElementById('copyTag');
+    const toast = document.getElementById('toast');
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+    copyTag.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText('NVX');
+        toast.textContent = 'Clan tag NVX copied!';
+      } catch {
+        toast.textContent = 'Your clan tag: NVX';
+      }
+      toast.classList.add('show');
+      window.setTimeout(() => toast.classList.remove('show'), 2200);
+    });
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.feature-card, .drop-card, .step, .join-panel, .manifesto').forEach(el => {
+      el.classList.add('reveal');
+      revealObserver.observe(el);
+    });
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.textContent = isOpen ? '✕' : '☰';
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.textContent = '☰';
+    }));
+    document.querySelectorAll('.faq-question').forEach(button => button.addEventListener('click', () => {
+      const item = button.closest('.faq-item');
+      const open = item.classList.toggle('open');
+      button.setAttribute('aria-expanded', String(open));
+    }));
+  </script>
+</body>
+</html>
